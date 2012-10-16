@@ -1,1 +1,0 @@
-This is a repository in which the AR team will begin their work. It should eventually be combined with other teams' code in the UPS-CS240-F12/main_trunk.
