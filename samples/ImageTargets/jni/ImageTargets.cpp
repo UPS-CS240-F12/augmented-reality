@@ -74,7 +74,7 @@ bool isActivityInPortraitMode   = false;
 QCAR::Matrix44F projectionMatrix;
 
 // Constants:
-static const float kObjectScale = 120.f;
+static const float kObjectScale = 80.f;
 
 QCAR::DataSet* dataSetStonesAndChips    = 0;
 QCAR::DataSet* dataSetTarmac            = 0;
@@ -297,8 +297,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_onQCARInitializedNative(
 
     // Comment in to enable tracking of up to 2 targets simultaneously and
     // split the work over multiple frames:
-    // QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
-    // QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
+    QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
+    QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
 }
 
 

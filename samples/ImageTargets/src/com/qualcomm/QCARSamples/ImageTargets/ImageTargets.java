@@ -293,6 +293,7 @@ public class ImageTargets extends Activity
     private void loadTextures()
     {
     	mTextures.add(Texture.loadTextureFromApk("banana.jpg", getAssets()));
+    	mTextures.add(Texture.loadTextureFromApk("banana180.jpg", getAssets()));
         mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
                                                  getAssets()));
         mTextures.add(Texture.loadTextureFromApk("TextureTeapotBlue.png",
