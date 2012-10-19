@@ -44,7 +44,7 @@ obj/local/armeabi/objs-debug/ImageTargets/ImageTargets.o: \
  jni/../../../build/include/QCAR/ImageTracker.h \
  jni/../../../build/include/QCAR/UpdateCallback.h \
  jni/../../../build/include/QCAR/DataSet.h jni/SampleUtils.h \
- jni/Texture.h jni/CubeShaders.h jni/Teapot.h
+ jni/Texture.h jni/CubeShaders.h jni/Teapot.h jni/banana.h
 
 /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/jni.h:
 
@@ -141,3 +141,5 @@ jni/Texture.h:
 jni/CubeShaders.h:
 
 jni/Teapot.h:
+
+jni/banana.h:

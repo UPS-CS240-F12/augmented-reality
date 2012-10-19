@@ -43,6 +43,7 @@
 #include "Texture.h"
 #include "CubeShaders.h"
 #include "Teapot.h"
+#include "banana.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -73,7 +74,7 @@ bool isActivityInPortraitMode   = false;
 QCAR::Matrix44F projectionMatrix;
 
 // Constants:
-static const float kObjectScale = 3.f;
+static const float kObjectScale = 120.f;
 
 QCAR::DataSet* dataSetStonesAndChips    = 0;
 QCAR::DataSet* dataSetTarmac            = 0;
@@ -296,8 +297,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_onQCARInitializedNative(
 
     // Comment in to enable tracking of up to 2 targets simultaneously and
     // split the work over multiple frames:
-    // QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
-    // QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
+    QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
+    QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
 }
 
 
@@ -387,11 +388,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUseProgram(shaderProgramID);
          
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &teapotVertices[0]);
+                              (const GLvoid*) &bananaVerts[0]);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &teapotNormals[0]);
+                              (const GLvoid*) &bananaNormals[0]);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &teapotTexCoords[0]);
+                              (const GLvoid*) &bananaTexCoords[0]);
         
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
@@ -401,8 +402,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
                            (GLfloat*)&modelViewProjection.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
-                       (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, bananaNumVerts);
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
 #endif
