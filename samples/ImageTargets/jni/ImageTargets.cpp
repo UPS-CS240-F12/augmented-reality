@@ -44,6 +44,7 @@
 #include "CubeShaders.h"
 #include "Teapot.h"
 #include "banana.h"
+#include "tower_top.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -388,11 +389,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUseProgram(shaderProgramID);
          
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &bananaVerts[0]);
+                              (const GLvoid*) &tower_topVerts[0]);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &bananaNormals[0]);
+                              (const GLvoid*) &tower_topNormals[0]);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &bananaTexCoords[0]);
+                              (const GLvoid*) &tower_topTexCoords[0]);
         
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
@@ -402,7 +403,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
                            (GLfloat*)&modelViewProjection.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, bananaNumVerts);
+        glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
 #endif
