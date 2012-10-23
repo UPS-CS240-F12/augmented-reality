@@ -221,7 +221,8 @@ void
 SampleUtils::drawMatrix(float transX, float transY, float transZ, float* MVmatrix,
 						float scaleX, float scaleY, float scaleZ,
 						float *proMatrix, float *MVPmatrix,
-						float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts)
+						float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts,
+						unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle)
 {
     //Modify modelViewMAtrix
 	SampleUtils::translatePoseMatrix(transX, transY, transZ, MVmatrix); //Translate matrix
@@ -229,22 +230,22 @@ SampleUtils::drawMatrix(float transX, float transY, float transZ, float* MVmatri
     SampleUtils::multiplyMatrix(proMatrix, MVmatrix, MVPmatrix);	//multiply matrix by something and store in result
 
     //Calls to openGL
-    glUseProgram(shaderProgramID);
+    glUseProgram(shaderID);
 
-    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+    glVertexAttribPointer(vHandle, 3, GL_FLOAT, GL_FALSE, 0,
                           (const GLvoid*) imageVert);
-    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
+    glVertexAttribPointer(nHandle, 3, GL_FLOAT, GL_FALSE, 0,
                           (const GLvoid*) imageNorm);
-    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
+    glVertexAttribPointer(tCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
                           (const GLvoid*) imageTexCoor);
 
-    glEnableVertexAttribArray(vertexHandle);
-    glEnableVertexAttribArray(normalHandle);
-    glEnableVertexAttribArray(textureCoordHandle);
+    glEnableVertexAttribArray(vHandle);
+    glEnableVertexAttribArray(nHandle);
+    glEnableVertexAttribArray(tCoordHandle);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
+    glUniformMatrix4fv(mvpMHandle, 1, GL_FALSE,
                        (GLfloat*)proMatrix);
     glDrawArrays(GL_TRIANGLES, 0, numVerts);
 }

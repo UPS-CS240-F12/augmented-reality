@@ -379,7 +379,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         SampleUtils::drawMatrix(0.0f, 0.0f, kObjectScale, &modelViewMatrix.data[0],
 								kObjectScale, kObjectScale, kObjectScale,
 								&projectionMatrix.data[0], &modelViewProjection.data[0],
-								&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts);
+								&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts,
+								shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle);
 
         /*
         glUseProgram(shaderProgramID);

@@ -64,9 +64,10 @@ public:
 
     // Does all matrix work involved with drawing images
     static void drawMatrix(float transX, float transY, float transZ, float* MVmatrix,
-							float scaleX, float scaleY, float scaleZ,
-							float *proMatrix, float *MVPmatrix,
-							float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts);
+			float scaleX, float scaleY, float scaleZ,
+			float *proMatrix, float *MVPmatrix,
+			float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts,
+			unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle);
 };
 
 #endif // _QCAR_SAMPLEUTILS_H_
