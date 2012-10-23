@@ -375,11 +375,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
                        (const GLvoid*) &teapotIndices[0]);
 #else
-        QCAR::Matrix44F modelViewProjection;
+        QCAR::Matrix44F modelViewProjection; //Gets the modelview matrix
         SampleUtils::drawMatrix(0.0f, 0.0f, kObjectScale, &modelViewMatrix.data[0],
 								kObjectScale, kObjectScale, kObjectScale,
-								&projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
+								&projectionMatrix.data[0], &modelViewProjection.data[0],
+								&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts);
 
+        /*
         glUseProgram(shaderProgramID);
          
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
@@ -398,6 +400,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
                            (GLfloat*)&modelViewProjection.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
+        */
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
 #endif
