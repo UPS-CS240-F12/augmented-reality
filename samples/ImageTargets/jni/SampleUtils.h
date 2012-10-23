@@ -61,6 +61,11 @@ public:
     /// Create a shader program.
     static unsigned int createProgramFromBuffer(const char* vertexShaderBuffer,
         const char* fragmentShaderBuffer);
+
+    // Does all matrix work involved with drawing images
+    static void drawMatrix(float transX, float transY, float transScale, float* matrix,
+			float scaleX, float scaleY, float ScaleZ,
+			float *multA, float *multB, float *result);
 };
 
 #endif // _QCAR_SAMPLEUTILS_H_

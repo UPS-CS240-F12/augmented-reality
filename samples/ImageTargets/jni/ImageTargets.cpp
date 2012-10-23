@@ -375,16 +375,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
                        (const GLvoid*) &teapotIndices[0]);
 #else
-
         QCAR::Matrix44F modelViewProjection;
-
-        SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
-                                         &modelViewMatrix.data[0]);
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
-                                     &modelViewMatrix.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
-                                    &modelViewMatrix.data[0] ,
-                                    &modelViewProjection.data[0]);
+        SampleUtils::drawMatrix(0.0f, 0.0f, kObjectScale, &modelViewMatrix.data[0],
+								kObjectScale, kObjectScale, kObjectScale,
+								&projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
 
         glUseProgram(shaderProgramID);
          

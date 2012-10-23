@@ -202,6 +202,30 @@ SampleUtils::initShader(unsigned int shaderType, const char* source)
 #endif
 }
 
+/**
+ * Method attempts to encapsulate the matrix operations from ImageTargets.cpp to make drawing multiple
+ * images easier
+ * @param transX
+ * @param transY
+ * @param transScale
+ * @param matrix
+ * @param scaleX
+ * @param scaleY
+ * @param scaleZ
+ * @param multA
+ * @param multB
+ * @param result
+ * @return void
+ */
+void
+SampleUtils::drawMatrix(float transX, float transY, float transScale, float* matrix,
+						float scaleX, float scaleY, float scaleZ,
+						float *multA, float *multB, float *result)
+{
+    SampleUtils::translatePoseMatrix(transX, transY, transScale, matrix); //Translate matrix
+    SampleUtils::scalePoseMatrix(scaleX, scaleY, scaleZ, matrix);	//Scale matrix
+    SampleUtils::multiplyMatrix(multA, multB, result);	//multiply matrix by something and store in result
+}
 
 unsigned int
 SampleUtils::createProgramFromBuffer(const char* vertexShaderBuffer,
