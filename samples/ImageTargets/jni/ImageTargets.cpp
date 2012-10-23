@@ -45,6 +45,7 @@
 #include "Teapot.h"
 #include "banana.h"
 #include "tower_top.h"
+#include "turret.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -73,6 +74,9 @@ bool isActivityInPortraitMode   = false;
 
 // The projection matrix used for rendering virtual objects:
 QCAR::Matrix44F projectionMatrix;
+
+// A second projection matrix. Do we really need it to render two objects?
+QCAR::Matrix44F projectionMatrix2;
 
 // Constants:
 static const float kObjectScale = 120.f;
@@ -337,7 +341,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         // Get the trackable:
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
         QCAR::Matrix44F modelViewMatrix =
-            QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
+            QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+        // Get the trackable for second modelViewMatrix
+        QCAR::Matrix44F modelViewMatrix2 =
+                    QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 
         // Choose the texture based on the target name:
         int textureIndex;
@@ -376,9 +383,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                        (const GLvoid*) &teapotIndices[0]);
 #else
 
+        //Draw the turret.
         QCAR::Matrix44F modelViewProjection;
 
-        SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
+        //translate the turret.
+        SampleUtils::translatePoseMatrix(100.0f, 0.0f, kObjectScale,
                                          &modelViewMatrix.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
                                      &modelViewMatrix.data[0]);
@@ -389,11 +398,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUseProgram(shaderProgramID);
          
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &tower_topVerts[0]);
+                              (const GLvoid*) &turretVerts[0]);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &tower_topNormals[0]);
+                              (const GLvoid*) &turretNormals[0]);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &tower_topTexCoords[0]);
+                              (const GLvoid*) &turretTexCoords[0]);
         
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
@@ -403,9 +412,43 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
                            (GLfloat*)&modelViewProjection.data[0] );
+        glDrawArrays(GL_TRIANGLES, 0, turretNumVerts);
+
+        SampleUtils::checkGlError("ImageTargets renderFrame");
+
+        // Draw the tower_top! notice that we are drawing two different objects.
+        // let's study this code and figure out if we have any redundancies with the above.
+        QCAR::Matrix44F modelViewProjection2;
+
+        SampleUtils::translatePoseMatrix(-100.0f, 0.0f, kObjectScale,
+        		&modelViewMatrix2.data[0]);
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
+        		&modelViewMatrix2.data[0]);
+        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
+        		&modelViewMatrix2.data[0] ,
+        		&modelViewProjection2.data[0]);
+
+        glUseProgram(shaderProgramID);
+
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+        		(const GLvoid*) &tower_topVerts[0]);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
+        		(const GLvoid*) &tower_topNormals[0]);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
+        		(const GLvoid*) &tower_topTexCoords[0]);
+
+        glEnableVertexAttribArray(vertexHandle);
+        glEnableVertexAttribArray(normalHandle);
+        glEnableVertexAttribArray(textureCoordHandle);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
+        		(GLfloat*)&modelViewProjection2.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
+
 #endif
 
     }

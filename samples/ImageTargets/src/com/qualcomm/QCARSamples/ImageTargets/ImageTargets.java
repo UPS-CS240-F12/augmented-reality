@@ -292,9 +292,9 @@ public class ImageTargets extends Activity
     use for rendering. */
     private void loadTextures()
     {
-    	mTextures.add(Texture.loadTextureFromApk("tower_top.png", getAssets()));
-    	mTextures.add(Texture.loadTextureFromApk("tower_top.png", getAssets()));
-    	mTextures.add(Texture.loadTextureFromApk("tower_top.png", getAssets())); 
+    	mTextures.add(Texture.loadTextureFromApk("turret.png", getAssets()));
+    	mTextures.add(Texture.loadTextureFromApk("turret.png", getAssets()));
+    	mTextures.add(Texture.loadTextureFromApk("turret.png", getAssets())); 
     }
     
     
