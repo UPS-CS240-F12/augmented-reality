@@ -76,6 +76,12 @@ QCAR::Matrix44F projectionMatrix;
 // Constants:
 static const float kObjectScale = 120.f;
 
+static const float kBowlScaleX    = 120.0f * 0.15f;
+static const float kBowlScaleY    = 120.0f * 0.15f;
+static const float kBowlScaleZ    = 120.0f * 0.15f; //UPDATE:: More stuff to spin the object
+
+void spinObject(QCAR::Matrix44F& modelViewMatrix); //UPDATE:: put this here? why? because MultiTargets did...
+
 QCAR::DataSet* dataSetStonesAndChips    = 0;
 QCAR::DataSet* dataSetTarmac            = 0;
 
@@ -373,10 +379,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
                        (const GLvoid*) &teapotIndices[0]);
+		
+
+
 #else
 
-        QCAR::Matrix44F modelViewProjection;
-
+        QCAR::Matrix44F modelViewProjectionSpin;
+/*
         SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
                                          &modelViewMatrix.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
@@ -405,6 +414,40 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawArrays(GL_TRIANGLES, 0, bananaNumVerts);
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
+		*/
+		//UPDATE:: Me thinks this will get a spinning object
+		// Draw the object:
+        modelViewMatrixSpin = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());  
+
+        // Remove the following line to make the bowl stop spinning:
+        spinObject(modelViewMatrixSpin);
+
+        SampleUtils::translatePoseMatrix(0.0f, -0.50f*120.0f, 1.35f*120.0f,
+                                         &modelViewMatrixSpin.data[0]);
+        SampleUtils::rotatePoseMatrix(-90.0f, 1.0f, 0, 0,
+                                      &modelViewMatrixSpin.data[0]);
+   
+        SampleUtils::scalePoseMatrix(kBowlScaleX, kBowlScaleY, kBowlScaleZ,
+                                     &modelViewMatrixSpin.data[0]);
+        SampleUtils::multiplyMatrix(&projectionMatrixSpin.data[0],
+                                    &modelViewMatrixSpin.data[0],
+                                    &modelViewProjectionSpin.data[0]);
+
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+                              (const GLvoid*) &objectVertices[0]);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
+                              (const GLvoid*) &objectNormals[0]);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
+                              (const GLvoid*) &objectTexCoords[0]);
+        
+        glBindTexture(GL_TEXTURE_2D, textures[1]->mTextureID);
+        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
+                           (GLfloat*)&modelViewProjectionSpin.data[0] );
+        glDrawElements(GL_TRIANGLES, NUM_OBJECT_INDEX, GL_UNSIGNED_SHORT,
+                       (const GLvoid*) &objectIndices[0]);
+
+        SampleUtils::checkGlError("MultiTargets renderFrame");
+
 #endif
 
     }
@@ -725,6 +768,32 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
     configureVideoBackground();
 }
 
+double
+getCurrentTime()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    double t = tv.tv_sec + tv.tv_usec/1000000.0;
+    return t;
+}
+
+
+void
+spinObject(QCAR::Matrix44F& modelViewMatrix)
+{
+    static float rotateAngle = 0.0f;
+
+    static double prevTime = getCurrentTime();
+    double time = getCurrentTime();             // Get real time difference
+    float dt = (float)(time-prevTime);          // from frame to frame
+
+    rotateAngle += dt * 180.0f/3.1415f;     // Animate angle based on time
+
+    SampleUtils::rotatePoseMatrix(rotateAngle, 0.0f, 1.0f, 0.0f,
+                                  &modelViewMatrix.data[0]);//UPDATE:: change this to what ever matrix we need for the turret
+
+    prevTime = time;
+}
 
 #ifdef __cplusplus
 }
