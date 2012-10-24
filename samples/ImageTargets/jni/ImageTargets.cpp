@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/time.h>
 
 #ifdef USE_OPENGL_ES_1_1
 #include <GLES/gl.h>
@@ -76,11 +77,12 @@ QCAR::Matrix44F projectionMatrix;
 // Constants:
 static const float kObjectScale = 120.f;
 
-static const float kBowlScaleX    = 120.0f * 0.15f;
-static const float kBowlScaleY    = 120.0f * 0.15f;
-static const float kBowlScaleZ    = 120.0f * 0.15f; //UPDATE:: More stuff to spin the object
+static const float kBowlScaleX    = 10.0f * 0.15f;
+static const float kBowlScaleY    = 10.0f * 0.15f;
+static const float kBowlScaleZ    = 10.0f * 0.15f; //UPDATE:: More stuff to spin the object
 
 void spinObject(QCAR::Matrix44F& modelViewMatrix); //UPDATE:: put this here? why? because MultiTargets did...
+double getCurrentTime(); //UPDATE:: declareing methods?
 
 QCAR::DataSet* dataSetStonesAndChips    = 0;
 QCAR::DataSet* dataSetTarmac            = 0;
@@ -384,7 +386,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
 #else
 
-        QCAR::Matrix44F modelViewProjectionSpin;
+        QCAR::Matrix44F modelViewProjection;
 /*
         SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
                                          &modelViewMatrix.data[0]);
@@ -417,36 +419,35 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		*/
 		//UPDATE:: Me thinks this will get a spinning object
 		// Draw the object:
-        modelViewMatrixSpin = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());  
+        // modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 
         // Remove the following line to make the bowl stop spinning:
-        spinObject(modelViewMatrixSpin);
+        spinObject(modelViewMatrix);
 
         SampleUtils::translatePoseMatrix(0.0f, -0.50f*120.0f, 1.35f*120.0f,
-                                         &modelViewMatrixSpin.data[0]);
+                                         &modelViewMatrix.data[0]);
         SampleUtils::rotatePoseMatrix(-90.0f, 1.0f, 0, 0,
-                                      &modelViewMatrixSpin.data[0]);
+                                      &modelViewMatrix.data[0]);
    
         SampleUtils::scalePoseMatrix(kBowlScaleX, kBowlScaleY, kBowlScaleZ,
-                                     &modelViewMatrixSpin.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrixSpin.data[0],
-                                    &modelViewMatrixSpin.data[0],
-                                    &modelViewProjectionSpin.data[0]);
+                                    &modelViewMatrix.data[0]);
+        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
+                                    &modelViewMatrix.data[0],
+                                    &modelViewProjection.data[0]);
 
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &objectVertices[0]);
+                              (const GLvoid*) &bananaVerts[0]);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &objectNormals[0]);
+                              (const GLvoid*) &bananaNormals[0]);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &objectTexCoords[0]);
+                              (const GLvoid*) &bananaTexCoords[0]);
         
         glBindTexture(GL_TEXTURE_2D, textures[1]->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
-                           (GLfloat*)&modelViewProjectionSpin.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_OBJECT_INDEX, GL_UNSIGNED_SHORT,
-                       (const GLvoid*) &objectIndices[0]);
+                           (GLfloat*)&modelViewProjection.data[0] );
+        glDrawArrays(GL_TRIANGLES, 0, bananaNumVerts);
 
-        SampleUtils::checkGlError("MultiTargets renderFrame");
+        SampleUtils::checkGlError("ImageTargets renderFrame");
 
 #endif
 

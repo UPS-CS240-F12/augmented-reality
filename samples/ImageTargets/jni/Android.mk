@@ -21,7 +21,7 @@ LOCAL_MODULE := QCAR-prebuilt
 LOCAL_SRC_FILES = ../../../build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../build/include
 include $(PREBUILT_SHARED_LIBRARY)
-include $(BUILD_STATIC_LIBRARY)
+#include $(BUILD_STATIC_LIBRARY)
 
 #-----------------------------------------------------------------------------
 
