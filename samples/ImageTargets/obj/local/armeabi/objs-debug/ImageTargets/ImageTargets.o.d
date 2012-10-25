@@ -21,6 +21,8 @@ obj/local/armeabi/objs-debug/ImageTargets/ImageTargets.o: \
  /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/string.h \
  /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/malloc.h \
  /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/assert.h \
+ /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/time.h \
+ /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/linux/time.h \
  /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h \
  /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h \
  /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h \
@@ -88,6 +90,10 @@ obj/local/armeabi/objs-debug/ImageTargets/ImageTargets.o: \
 /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/malloc.h:
 
 /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/assert.h:
+
+/Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/time.h:
+
+/Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/linux/time.h:
 
 /Users/matthewcburke/dev/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h:
 

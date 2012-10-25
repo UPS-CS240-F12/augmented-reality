@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/time.h>
 
 #ifdef USE_OPENGL_ES_1_1
 #include <GLES/gl.h>
@@ -64,6 +65,8 @@ GLint normalHandle              = 0;
 GLint textureCoordHandle        = 0;
 GLint mvpMatrixHandle           = 0;
 #endif
+
+float turAng = 0.0;
 
 // Screen dimensions:
 unsigned int screenWidth        = 0;
@@ -362,6 +365,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         }
 
         const Texture* const thisTexture = textures[textureIndex];
+        const Texture* const thisTexture2 = textures[textureIndex + 1];
 
 #ifdef USE_OPENGL_ES_1_1
         // Load projection matrix:
@@ -386,9 +390,15 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         //Draw the turret.
         QCAR::Matrix44F modelViewProjection;
 
+        if( turAng < 180.0)
+        {
+        	turAng = turAng + 1.0;
+        }
+
         //translate the turret.
         SampleUtils::translatePoseMatrix(100.0f, 0.0f, kObjectScale,
                                          &modelViewMatrix.data[0]);
+        SampleUtils::rotatePoseMatrix(turAng, 0.0f, 0.0f, 1.0f, &modelViewMatrix.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
                                      &modelViewMatrix.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
@@ -422,6 +432,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
         SampleUtils::translatePoseMatrix(-100.0f, 0.0f, kObjectScale,
         		&modelViewMatrix2.data[0]);
+        SampleUtils::rotatePoseMatrix( 90.0f, 1.0f, 0.0f, 0.0f, &modelViewMatrix2.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
         		&modelViewMatrix2.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
@@ -431,21 +442,21 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUseProgram(shaderProgramID);
 
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-        		(const GLvoid*) &tower_topVerts[0]);
+        		(const GLvoid*) &bananaVerts[0]);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-        		(const GLvoid*) &tower_topNormals[0]);
+        		(const GLvoid*) &bananaNormals[0]);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-        		(const GLvoid*) &tower_topTexCoords[0]);
+        		(const GLvoid*) &bananaTexCoords[0]);
 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
         		(GLfloat*)&modelViewProjection2.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
+        glDrawArrays(GL_TRIANGLES, 0, bananaNumVerts);
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
 
