@@ -46,7 +46,7 @@ external builder).
 2. If you want to be able to modify the JNI resources (i.e. C++ code), you will need to install and set up the [Android NDK](http://developer.android.com/tools/sdk/ndk/index.html).
 This should allow you to edit, and re-build the project.
 
-3. If you want the full monty, follow the [Vuforia SDK](https://ar.qualcomm.at/qdevnet/) instalation instructions. They are long but thorough. Pay attention and don't skip steps.
+3. If you want the full monty, follow the [Vuforia SDK](https://ar.qualcomm.at/qdevnet/) installation instructions. They are long but thorough. Pay attention and don't skip steps.
 
 git-flow
 ========
