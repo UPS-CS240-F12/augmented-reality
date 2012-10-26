@@ -19,6 +19,14 @@
 #include <stdio.h>
 #include <android/log.h>
 
+#ifdef USE_OPENGL_ES_1_1
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+#else
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#endif
+
 // Utility for logging:
 #define LOG_TAG    "IMAGE_TARGETS"
 #define LOG(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
@@ -67,7 +75,7 @@ public:
 			float scaleX, float scaleY, float scaleZ,
 			float *proMatrix, float *MVPmatrix,
 			float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts,
-			unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle);
+			unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle, Texture theTexture);
 };
 
 #endif // _QCAR_SAMPLEUTILS_H_

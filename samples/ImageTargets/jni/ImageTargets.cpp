@@ -64,6 +64,7 @@ GLint textureCoordHandle        = 0;
 GLint mvpMatrixHandle           = 0;
 #endif
 
+
 // Screen dimensions:
 unsigned int screenWidth        = 0;
 unsigned int screenHeight       = 0;
@@ -380,7 +381,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 								kObjectScale, kObjectScale, kObjectScale,
 								&projectionMatrix.data[0], &modelViewProjection.data[0],
 								&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts,
-								shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle);
+								shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle, *thisTexture);
+
+        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
 
         /*
         glUseProgram(shaderProgramID);

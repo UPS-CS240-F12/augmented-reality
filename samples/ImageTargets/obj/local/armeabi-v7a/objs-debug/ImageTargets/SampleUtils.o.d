@@ -17,6 +17,10 @@ obj/local/armeabi-v7a/objs-debug/ImageTargets/SampleUtils.o: \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/machine/kernel.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/sysmacros.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/android/log.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2ext.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/math.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/limits.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/limits.h \
@@ -29,11 +33,7 @@ obj/local/armeabi-v7a/objs-debug/ImageTargets/SampleUtils.o: \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/malloc.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/alloca.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/strings.h \
- /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/memory.h \
- /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h \
- /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h \
- /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h \
- /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2ext.h
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/memory.h
 
 jni/SampleUtils.h:
 
@@ -71,6 +71,14 @@ jni/SampleUtils.h:
 
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/android/log.h:
 
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2ext.h:
+
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/math.h:
 
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/limits.h:
@@ -96,11 +104,3 @@ jni/SampleUtils.h:
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/strings.h:
 
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/memory.h:
-
-/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h:
-
-/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h:
-
-/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h:
-
-/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2ext.h:

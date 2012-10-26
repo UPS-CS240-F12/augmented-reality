@@ -19,6 +19,10 @@ obj/local/armeabi/objs-debug/ImageTargets/Texture.o: jni/Texture.cpp \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/machine/kernel.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/sysmacros.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/android/log.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2ext.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/string.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/malloc.h
 
@@ -61,6 +65,14 @@ jni/SampleUtils.h:
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/sysmacros.h:
 
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/android/log.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2platform.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/KHR/khrplatform.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/GLES2/gl2ext.h:
 
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/string.h:
 

@@ -222,7 +222,7 @@ SampleUtils::drawMatrix(float transX, float transY, float transZ, float* MVmatri
 						float scaleX, float scaleY, float scaleZ,
 						float *proMatrix, float *MVPmatrix,
 						float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts,
-						unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle)
+						unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle, Texture theTexture)
 {
     //Modify modelViewMAtrix
 	SampleUtils::translatePoseMatrix(transX, transY, transZ, MVmatrix); //Translate matrix
@@ -238,13 +238,12 @@ SampleUtils::drawMatrix(float transX, float transY, float transZ, float* MVmatri
                           (const GLvoid*) imageNorm);
     glVertexAttribPointer(tCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
                           (const GLvoid*) imageTexCoor);
-
     glEnableVertexAttribArray(vHandle);
     glEnableVertexAttribArray(nHandle);
     glEnableVertexAttribArray(tCoordHandle);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glBindTexture(GL_TEXTURE_2D, theTexture->mTextureID);
     glUniformMatrix4fv(mvpMHandle, 1, GL_FALSE,
                        (GLfloat*)proMatrix);
     glDrawArrays(GL_TRIANGLES, 0, numVerts);
