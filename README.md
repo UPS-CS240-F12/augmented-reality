@@ -6,7 +6,7 @@ code will be integrated with the mobile group's in the coming weeks.
 ## Developer Installation Instructions
 
 The following instructions will allow the user to download this project and run the application on a phone. They will not
-enable the user to modify the code. If you would like this functionality, see the installation notes below. These instructions assume
+enable the user to modify the code. If you would like this functionality, see the [installation notes](https://github.com/UPS-CS240-F12/augmented-reality/tree/develop#installation-notes) below. These instructions assume
 that the user has a current versions of the Eclipse IDE, Git, and the Android SDK installed.
 
 If you need any of these, you can get them here:
@@ -48,13 +48,18 @@ This should allow you to edit, and re-build the project.
 
 3. If you want the full monty, follow the [Vuforia SDK](https://ar.qualcomm.at/qdevnet/) installation instructions. They are long but thorough. Pay attention and don't skip steps.
 
+4. Once running, you’ll probably want some Image Targets at which to point the phone. They are located in the media/ folder: augmented-reality/samples/ImageTargets/media/.
+Both ‘stones’ and ‘chips’ will work immediately. The app won’t track ‘tarmac’ until the user opens a menu and switches to the tarmac dataset.
+
 git-flow
 ========
+(These instructions coutesy of the mobile group)
+
 This project uses [git-flow](https://github.com/nvie/gitflow/).
 
 Here are the [installation instructions](https://github.com/nvie/gitflow/wiki/Installation).
 
-Here are [usage instruction](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/).
+Here are [usage instructions](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/).
 
 Here's an explanation of the [branching model](http://nvie.com/posts/a-successful-git-branching-model/) git-flow uses.
 
