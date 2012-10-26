@@ -48,8 +48,8 @@ This should allow you to edit, and re-build the project.
 
 3. If you want the full monty, follow the [Vuforia SDK](https://ar.qualcomm.at/qdevnet/) installation instructions. They are long but thorough. Pay attention and don't skip steps.
 
-4. Once running, you’ll probably want some Image Targets at which to point the phone. They are located in the media/ folder: augmented-reality/samples/ImageTargets/media/.
-Both ‘stones’ and ‘chips’ will work immediately. The app won’t track ‘tarmac’ until the user opens a menu and switches to the tarmac dataset.
+4. Once running, you'll probably want some Image Targets at which to point the phone. They are located in the media/ folder: augmented-reality/samples/ImageTargets/media/.
+Both 'stones' and 'chips' will work immediately. The app won't track 'tarmac' until the user opens a menu and switches to the tarmac dataset.
 
 git-flow
 ========
