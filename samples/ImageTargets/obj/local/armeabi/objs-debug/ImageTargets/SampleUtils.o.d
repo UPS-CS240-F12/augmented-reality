@@ -1,5 +1,6 @@
 obj/local/armeabi/objs-debug/ImageTargets/SampleUtils.o: \
- jni/SampleUtils.cpp jni/SampleUtils.h \
+ jni/SampleUtils.cpp jni/SampleUtils.h jni/Texture.h \
+ /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/jni.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/stdio.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/cdefs.h \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/sys/cdefs_elf.h \
@@ -36,6 +37,10 @@ obj/local/armeabi/objs-debug/ImageTargets/SampleUtils.o: \
  /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/memory.h
 
 jni/SampleUtils.h:
+
+jni/Texture.h:
+
+/Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/jni.h:
 
 /Development/android-ndk-r8b/platforms/android-8/arch-arm/usr/include/stdio.h:
 

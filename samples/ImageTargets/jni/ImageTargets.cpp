@@ -355,7 +355,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             textureIndex = 2;
         }
 
-        const Texture* const thisTexture = textures[textureIndex];
+        //const Texture* const thisTexture = textures[textureIndex];
 
 #ifdef USE_OPENGL_ES_1_1
         // Load projection matrix:
@@ -377,13 +377,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                        (const GLvoid*) &teapotIndices[0]);
 #else
         QCAR::Matrix44F modelViewProjection; //Gets the modelview matrix
+
+        //Draws the matrix
         SampleUtils::drawMatrix(0.0f, 0.0f, kObjectScale, &modelViewMatrix.data[0],
 								kObjectScale, kObjectScale, kObjectScale,
 								&projectionMatrix.data[0], &modelViewProjection.data[0],
 								&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts,
-								shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle, *thisTexture);
-
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+								shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle, textures, textureIndex);
 
         /*
         glUseProgram(shaderProgramID);
@@ -399,13 +399,15 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         
+        //The order of these next 5 lines is intentional
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);  //TODO: What type is thisTexture?
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
                            (GLfloat*)&modelViewProjection.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
-        */
 
+        //glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+	*/
         SampleUtils::checkGlError("ImageTargets renderFrame");
 #endif
 

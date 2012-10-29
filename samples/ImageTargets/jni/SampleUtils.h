@@ -16,6 +16,8 @@
 #define _QCAR_SAMPLEUTILS_H_
 
 // Includes:
+#include "Texture.h"
+
 #include <stdio.h>
 #include <android/log.h>
 
@@ -75,7 +77,7 @@ public:
 			float scaleX, float scaleY, float scaleZ,
 			float *proMatrix, float *MVPmatrix,
 			float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts,
-			unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle, Texture theTexture);
+			unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle, Texture** theTextures, int theTextureIndex);
 };
 
 #endif // _QCAR_SAMPLEUTILS_H_

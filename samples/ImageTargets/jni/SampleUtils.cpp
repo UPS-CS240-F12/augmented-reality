@@ -12,6 +12,7 @@
 ==============================================================================*/
 
 #include "SampleUtils.h"
+#include "Texture.h"
 
 #include <math.h>
 #include <stdlib.h>
@@ -222,9 +223,11 @@ SampleUtils::drawMatrix(float transX, float transY, float transZ, float* MVmatri
 						float scaleX, float scaleY, float scaleZ,
 						float *proMatrix, float *MVPmatrix,
 						float *imageVert, float *imageNorm, float *imageTexCoor, int numVerts,
-						unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle, Texture theTexture)
+						unsigned int shaderID, GLint vHandle, GLint nHandle, GLint tCoordHandle, GLint mvpMHandle, Texture** theTextures, int theTextureIndex)
 {
-    //Modify modelViewMAtrix
+	const Texture* const thisTexture = theTextures[theTextureIndex];
+
+	//Modify modelViewMAtrix
 	SampleUtils::translatePoseMatrix(transX, transY, transZ, MVmatrix); //Translate matrix
     SampleUtils::scalePoseMatrix(scaleX, scaleY, scaleZ, MVmatrix);	//Scale matrix
     SampleUtils::multiplyMatrix(proMatrix, MVmatrix, MVPmatrix);	//multiply matrix by something and store in result
@@ -243,10 +246,13 @@ SampleUtils::drawMatrix(float transX, float transY, float transZ, float* MVmatri
     glEnableVertexAttribArray(tCoordHandle);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, theTexture->mTextureID);
+
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+
     glUniformMatrix4fv(mvpMHandle, 1, GL_FALSE,
                        (GLfloat*)proMatrix);
     glDrawArrays(GL_TRIANGLES, 0, numVerts);
+
 }
 
 unsigned int
