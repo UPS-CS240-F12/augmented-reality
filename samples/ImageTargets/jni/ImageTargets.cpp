@@ -10,6 +10,16 @@
     Sample for ImageTargets
 
 ==============================================================================*/
+/*
+ * Modified by the augmented reality team of CSCI 240, University of Puget Sound
+ *
+ * @version 2012.10.25
+ *
+ * @authors Matt Burke, Thomas Freeman, Erin Jamroz, David Greene, Selah-Mae Ross
+ *
+ * Most modifications are accompanied by a comment including the text: 'UPDATE::'
+ *
+ * */
 
 
 #include <jni.h>
@@ -17,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/time.h> // UPDATE:: to be used in animation
 
 #ifdef USE_OPENGL_ES_1_1
 #include <GLES/gl.h>
@@ -43,7 +54,11 @@
 #include "Texture.h"
 #include "CubeShaders.h"
 #include "Teapot.h"
+
+// UPDATE:: Our models to be displayed
 #include "banana.h"
+#include "tower_top.h"
+#include "turret.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -63,6 +78,9 @@ GLint textureCoordHandle        = 0;
 GLint mvpMatrixHandle           = 0;
 #endif
 
+// UPDATE:: added this variable to assist animating rotations for demo.
+float turAng = 0.0;
+
 // Screen dimensions:
 unsigned int screenWidth        = 0;
 unsigned int screenHeight       = 0;
@@ -73,8 +91,11 @@ bool isActivityInPortraitMode   = false;
 // The projection matrix used for rendering virtual objects:
 QCAR::Matrix44F projectionMatrix;
 
+// UPDATE:: A second projection matrix. Do we really need it to render two objects?
+QCAR::Matrix44F projectionMatrix2;
+
 // Constants:
-static const float kObjectScale = 120.f;
+static const float kObjectScale = 120.f; // UPDATE:: increased the scale to properly display our models. It was 3 for the teapots.
 
 QCAR::DataSet* dataSetStonesAndChips    = 0;
 QCAR::DataSet* dataSetTarmac            = 0;
@@ -336,10 +357,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         // Get the trackable:
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
         QCAR::Matrix44F modelViewMatrix =
-            QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
+            QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+        // UPDATE:: Load the trackable position into a second modelViewMatrix to display second item.
+        QCAR::Matrix44F modelViewMatrix2 =
+                    QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 
         // Choose the texture based on the target name:
         int textureIndex;
+        int textureIndex2; //UPDATE:: for display different textures on the same target.
         if (strcmp(trackable->getName(), "chips") == 0)
         {
             textureIndex = 0;
@@ -353,7 +378,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             textureIndex = 2;
         }
 
+        // UPDATE:: This is just a quick patch to make displaying two textures on one target for the demo.
+        // 			The following assignment prevents an index out of bounds error as long as three textures
+        //			are loaded into textures[] in ImageTargets.java.
+        textureIndex2 = (textureIndex + 1) % 3;
+
         const Texture* const thisTexture = textures[textureIndex];
+        const Texture* const thisTexture2 = textures[textureIndex2]; // UPDATE:: assign a second texture.
 
 #ifdef USE_OPENGL_ES_1_1
         // Load projection matrix:
@@ -375,10 +406,19 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                        (const GLvoid*) &teapotIndices[0]);
 #else
 
+        //Draw the turret.
         QCAR::Matrix44F modelViewProjection;
 
-        SampleUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScale,
+        // Quick and dirty demonstration of animation. The turret turns to face the banana.
+        if( turAng < 180.0)
+        {
+        	turAng = turAng + 1.0;
+        }
+
+        // UPDATE:: translate, rotate and scale the turret.
+        SampleUtils::translatePoseMatrix(100.0f, 0.0f, kObjectScale, // added the 100
                                          &modelViewMatrix.data[0]);
+        SampleUtils::rotatePoseMatrix(turAng, 0.0f, 0.0f, 1.0f, &modelViewMatrix.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
                                      &modelViewMatrix.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
@@ -388,11 +428,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUseProgram(shaderProgramID);
          
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &bananaVerts[0]);
+                              (const GLvoid*) &turretVerts[0]);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &bananaNormals[0]);
+                              (const GLvoid*) &turretNormals[0]);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &bananaTexCoords[0]);
+                              (const GLvoid*) &turretTexCoords[0]);
         
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
@@ -402,9 +442,44 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
                            (GLfloat*)&modelViewProjection.data[0] );
+        glDrawArrays(GL_TRIANGLES, 0, turretNumVerts);
+
+        SampleUtils::checkGlError("ImageTargets renderFrame");
+
+        // UPDATE:: Draw a banana positioned on the other side of the target.
+        // TO DO:: write a method so we aren't repeating the above code!
+        QCAR::Matrix44F modelViewProjection2;
+
+        SampleUtils::translatePoseMatrix(-100.0f, 0.0f, kObjectScale,
+        		&modelViewMatrix2.data[0]);
+        SampleUtils::rotatePoseMatrix( 90.0f, 1.0f, 0.0f, 0.0f, &modelViewMatrix2.data[0]);
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
+        		&modelViewMatrix2.data[0]);
+        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
+        		&modelViewMatrix2.data[0] ,
+        		&modelViewProjection2.data[0]);
+
+        glUseProgram(shaderProgramID);
+
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+        		(const GLvoid*) &bananaVerts[0]);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
+        		(const GLvoid*) &bananaNormals[0]);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
+        		(const GLvoid*) &bananaTexCoords[0]);
+
+        glEnableVertexAttribArray(vertexHandle);
+        glEnableVertexAttribArray(normalHandle);
+        glEnableVertexAttribArray(textureCoordHandle);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID); // UPDATE:: apply a different texture.
+        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
+        		(GLfloat*)&modelViewProjection2.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, bananaNumVerts);
 
         SampleUtils::checkGlError("ImageTargets renderFrame");
+
 #endif
 
     }

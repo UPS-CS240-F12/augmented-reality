@@ -10,7 +10,16 @@
     Sample for ImageTargets
 
 ==============================================================================*/
-
+/*
+ * Modified by the augmented reality team of CSCI 240, University of Puget Sound
+ *
+ * @version 2012.10.25
+ *
+ * @authors Matt Burke, Thomas Freeman, Erin Jamroz, David Greene, Selah-Mae Ross
+ *
+ * Most modifications are accompanied by a comment including the text: 'UPDATE::'
+ *
+ * */
 
 package com.qualcomm.QCARSamples.ImageTargets;
 
@@ -292,8 +301,9 @@ public class ImageTargets extends Activity
     use for rendering. */
     private void loadTextures()
     {
-    	mTextures.add(Texture.loadTextureFromApk("banana180.jpg", getAssets()));
-    	mTextures.add(Texture.loadTextureFromApk("banana180.jpg", getAssets()));
+    	// UPDATE:: We added these textures for the demo.
+    	mTextures.add(Texture.loadTextureFromApk("turret.png", getAssets()));
+    	mTextures.add(Texture.loadTextureFromApk("tower_top3.png", getAssets()));
     	mTextures.add(Texture.loadTextureFromApk("banana180.jpg", getAssets())); 
     }
     
