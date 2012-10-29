@@ -358,6 +358,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
         QCAR::Matrix44F modelViewMatrix =
             QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+
         // UPDATE:: Load the trackable position into a second modelViewMatrix to display second item.
         QCAR::Matrix44F modelViewMatrix2 =
                     QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
@@ -378,7 +379,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             textureIndex = 2;
         }
 
-        // UPDATE:: This is just a quick patch to make displaying two textures on one target for the demo.
+        // UPDATE:: This is just a quick patch to display two textures on one target for the demo.
         // 			The following assignment prevents an index out of bounds error as long as three textures
         //			are loaded into textures[] in ImageTargets.java.
         textureIndex2 = (textureIndex + 1) % 3;
@@ -416,11 +417,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         }
 
         // UPDATE:: translate, rotate and scale the turret.
-        SampleUtils::translatePoseMatrix(100.0f, 0.0f, kObjectScale, // added the 100
-                                         &modelViewMatrix.data[0]);
-        SampleUtils::rotatePoseMatrix(turAng, 0.0f, 0.0f, 1.0f, &modelViewMatrix.data[0]);
+        SampleUtils::translatePoseMatrix(100.0f, 0.0f, kObjectScale,
+                                    &modelViewMatrix.data[0]);
+        SampleUtils::rotatePoseMatrix(turAng, 0.0f, 0.0f, 1.0f,
+        			    &modelViewMatrix.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
-                                     &modelViewMatrix.data[0]);
+                                    &modelViewMatrix.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
                                     &modelViewMatrix.data[0] ,
                                     &modelViewProjection.data[0]);
@@ -452,7 +454,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
         SampleUtils::translatePoseMatrix(-100.0f, 0.0f, kObjectScale,
         		&modelViewMatrix2.data[0]);
-        SampleUtils::rotatePoseMatrix( 90.0f, 1.0f, 0.0f, 0.0f, &modelViewMatrix2.data[0]);
+        SampleUtils::rotatePoseMatrix( 90.0f, 1.0f, 0.0f, 0.0f,
+        		&modelViewMatrix2.data[0]);
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale,
         		&modelViewMatrix2.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0],
