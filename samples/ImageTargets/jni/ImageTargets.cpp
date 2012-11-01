@@ -53,7 +53,6 @@
 #include "SampleUtils.h"
 #include "Texture.h"
 #include "CubeShaders.h"
-#include "Teapot.h"
 
 // UPDATE:: Our models to be displayed
 #include "banana.h"
@@ -97,8 +96,8 @@ QCAR::Matrix44F projectionMatrix2;
 // Constants:
 static const float kObjectScale = 120.f; // UPDATE:: increased the scale to properly display our models. It was 3 for the teapots.
 
+QCAR::DataSet* dataSetVichar = 0;
 QCAR::DataSet* dataSetStonesAndChips    = 0;
-QCAR::DataSet* dataSetTarmac            = 0;
 
 bool switchDataSetAsap          = false;
 
@@ -115,7 +114,7 @@ class ImageTargets_UpdateCallback : public QCAR::UpdateCallback
             QCAR::TrackerManager& trackerManager = QCAR::TrackerManager::getInstance();
             QCAR::ImageTracker* imageTracker = static_cast<QCAR::ImageTracker*>(
                 trackerManager.getTracker(QCAR::Tracker::IMAGE_TRACKER));
-            if (imageTracker == 0 || dataSetStonesAndChips == 0 || dataSetTarmac == 0 ||
+            if (imageTracker == 0 || dataSetStonesAndChips == 0 || dataSetVichar == 0 ||
                 imageTracker->getActiveDataSet() == 0)
             {
                 LOG("Failed to switch data set.");
@@ -125,11 +124,12 @@ class ImageTargets_UpdateCallback : public QCAR::UpdateCallback
             if (imageTracker->getActiveDataSet() == dataSetStonesAndChips)
             {
                 imageTracker->deactivateDataSet(dataSetStonesAndChips);
-                imageTracker->activateDataSet(dataSetTarmac);
+                imageTracker->activateDataSet(dataSetVichar);
             }
+
             else
             {
-                imageTracker->deactivateDataSet(dataSetTarmac);
+                imageTracker->deactivateDataSet(dataSetVichar);
                 imageTracker->activateDataSet(dataSetStonesAndChips);
             }
         }
@@ -218,11 +218,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_loadTrackerData(JNIEnv *
         return 0;
     }
 
-    dataSetTarmac = imageTracker->createDataSet();
-    if (dataSetTarmac == 0)
+    // MB:: Create my dataset
+    dataSetVichar = imageTracker->createDataSet();
+    if (dataSetVichar == 0)
     {
-        LOG("Failed to create a new tracking data.");
-        return 0;
+    	LOG("Failed to create a new tracking data.");
+    	return 0;
     }
 
     // Load the data sets:
@@ -232,11 +233,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_loadTrackerData(JNIEnv *
         return 0;
     }
 
-    if (!dataSetTarmac->load("Tarmac.xml", QCAR::DataSet::STORAGE_APPRESOURCE))
-    {
-        LOG("Failed to load data set.");
-        return 0;
-    }
+    if (!dataSetVichar->load("vichar.xml", QCAR::DataSet::STORAGE_APPRESOURCE))
+        {
+            LOG("Failed to load data set.");
+            return 0;
+        }
 
     // Activate the data set:
     if (!imageTracker->activateDataSet(dataSetStonesAndChips))
@@ -286,25 +287,25 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_destroyTrackerData(JNIEn
         dataSetStonesAndChips = 0;
     }
 
-    if (dataSetTarmac != 0)
-    {
-        if (imageTracker->getActiveDataSet() == dataSetTarmac &&
-            !imageTracker->deactivateDataSet(dataSetTarmac))
+    if (dataSetVichar != 0)
         {
-            LOG("Failed to destroy the tracking data set Tarmac because the data set "
-                "could not be deactivated.");
-            return 0;
-        }
+            if (imageTracker->getActiveDataSet() == dataSetVichar &&
+                !imageTracker->deactivateDataSet(dataSetVichar))
+            {
+                LOG("Failed to destroy the tracking data set Vichar because the data set "
+                    "could not be deactivated.");
+                return 0;
+            }
 
-        if (!imageTracker->destroyDataSet(dataSetTarmac))
-        {
-            LOG("Failed to destroy the tracking data set Tarmac.");
-            return 0;
-        }
+            if (!imageTracker->destroyDataSet(dataSetVichar))
+            {
+                LOG("Failed to destroy the tracking data set Vichar.");
+                return 0;
+            }
 
-        LOG("Successfully destroyed the data set Tarmac.");
-        dataSetTarmac = 0;
-    }
+            LOG("Successfully destroyed the data set Vichar.");
+            dataSetVichar = 0;
+        }
 
     return 1;
 }

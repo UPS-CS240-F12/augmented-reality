@@ -4,6 +4,14 @@
 	<classpathentry exported="true" kind="var" path="QCAR_SDK_ROOT/build/java/QCAR/QCAR.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/Users/matthewcburke/dev/android-sdk-macosx/platforms/android-8/android.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/matthewcburke/dev/android-sdk-macosx/docs/reference"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
