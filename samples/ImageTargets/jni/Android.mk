@@ -66,7 +66,7 @@ endif
 # NOTE: flag "-Wno-write-strings" removes warning about deprecated conversion
 #       from string constant to ‘char*’
 
-LOCAL_CFLAGS := -Wno-write-strings $(OPENGLES_DEF)
+LOCAL_CFLAGS := -Wno-psabi -Wno-write-strings $(OPENGLES_DEF)
 
 # The list of additional linker flags to be used when building your
 # module. This is useful to pass the name of specific system libraries
