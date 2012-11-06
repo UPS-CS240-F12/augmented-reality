@@ -83,6 +83,9 @@ QCAR::DataSet* dataSetTarmac            = 0;
 
 bool switchDataSetAsap          = false;
 
+// Our Additions:
+obj drawList[100]
+
 // Object to receive update callbacks from QCAR SDK
 class ImageTargets_UpdateCallback : public QCAR::UpdateCallback
 {   
@@ -341,6 +344,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
 
         // Choose the texture based on the target name:
+		// We need to choose which target will be our game world
+		// Soon texture index will be set instead by the 'helper' method
         int textureIndex;
         if (strcmp(trackable->getName(), "chips") == 0)
         {
@@ -355,7 +360,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             textureIndex = 2;
         }
 
-        //const Texture* const thisTexture = textures[textureIndex];
+        const Texture* const thisTexture = textures[textureIndex];
 
 #ifdef USE_OPENGL_ES_1_1
         // Load projection matrix:
@@ -376,58 +381,81 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT,
                        (const GLvoid*) &teapotIndices[0]);
 #else
-        QCAR::Matrix44F modelViewProjection; //Gets the modelview matrix
 
-        //Draws the matrix
-        SampleUtils::drawMatrix(0.0f, 0.0f, kObjectScale, &modelViewMatrix.data[0],
-								kObjectScale, kObjectScale, kObjectScale,
-								&projectionMatrix.data[0], &modelViewProjection.data[0],
-								&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts,
-								shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle, textures, textureIndex);
+		//We need to get the Drawlist before this point, via method call or somehow being passed from the java.
+		drawList =  [100]*0
 
-        /*
-        glUseProgram(shaderProgramID);
+		for(int i; i<drawList.size();i++){
+			obj curTar = drawList[0];
+			
+			curTarID=[0]
+			xtrans=curTar[1]
+			ytrans=curTar[2]
+			ztrans=curTar[3]
+			xang=curTar[4]
+			yang=curTar[5]
+			zang=curTar[6]
+			
+		
+		
+		
+			QCAR::Matrix44F modelViewProjection; //Gets the modelview matrix
+
+			//Draws the matrix
+			/*
+			SampleUtils::drawMatrix(0.0f, 0.0f, kObjectScale, &modelViewMatrix.data[0],
+									kObjectScale, kObjectScale, kObjectScale,
+									&projectionMatrix.data[0], &modelViewProjection.data[0],
+									&tower_topVerts[0], &tower_topNormals[0], &tower_topTexCoords[0], tower_topNumVerts,
+									shaderProgramID, vertexHandle, normalHandle, textureCoordHandle, mvpMatrixHandle, textures, textureIndex);
+			*/
+
+        
+			glUseProgram(shaderProgramID);
          
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &tower_topVerts[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &tower_topNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              (const GLvoid*) &tower_topTexCoords[0]);
+			glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+								  (const GLvoid*) &tower_topVerts[0]);
+			glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
+								  (const GLvoid*) &tower_topNormals[0]);
+			glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
+								  (const GLvoid*) &tower_topTexCoords[0]);
         
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
+			glEnableVertexAttribArray(vertexHandle);
+			glEnableVertexAttribArray(normalHandle);
+			glEnableVertexAttribArray(textureCoordHandle);
         
-        //The order of these next 5 lines is intentional
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);  //TODO: What type is thisTexture?
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
-                           (GLfloat*)&modelViewProjection.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
+			//The order of these next 5 lines is intentional
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);  //TODO: What type is thisTexture?
+			glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE,
+							   (GLfloat*)&modelViewProjection.data[0] );
+			glDrawArrays(GL_TRIANGLES, 0, tower_topNumVerts);
 
-        //glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-	*/
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-#endif
+			//glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+	
+			SampleUtils::checkGlError("ImageTargets renderFrame");
+		}
+	#endif
 
-    }
+	}
 
-    glDisable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 
-#ifdef USE_OPENGL_ES_1_1        
-    glDisable(GL_TEXTURE_2D);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-#else
-    glDisableVertexAttribArray(vertexHandle);
-    glDisableVertexAttribArray(normalHandle);
-    glDisableVertexAttribArray(textureCoordHandle);
-#endif
+	#ifdef USE_OPENGL_ES_1_1        
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	#else
+		glDisableVertexAttribArray(vertexHandle);
+		glDisableVertexAttribArray(normalHandle);
+		glDisableVertexAttribArray(textureCoordHandle);
+	#endif
 
-    QCAR::Renderer::getInstance().end();
-}
+		QCAR::Renderer::getInstance().end();
+
+	}
+//}
 
 
 void
