@@ -84,7 +84,8 @@ QCAR::DataSet* dataSetTarmac            = 0;
 bool switchDataSetAsap          = false;
 
 // Our Additions:
-obj drawList[100]
+float drawList[3][7];
+
 
 // Object to receive update callbacks from QCAR SDK
 class ImageTargets_UpdateCallback : public QCAR::UpdateCallback
@@ -383,23 +384,43 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #else
 
 		//We need to get the Drawlist before this point, via method call or somehow being passed from the java.
-		drawList =  [100]*0
+
+		//Hardcoded short list of objects for test run. 
+		// ID,transX,transY,transZ,angX,angY,angZ
+		drawList[0]=[0.0,100.0,100.0,0.0,90.0,0.0,0.0];
+		drawList[1]=[0.0,100.0,0.0,0.0,180.0,0.0,0.0];
+		drawList[2]=[0.0,0.0,100.0,0.0,0.0,0.0,0.0];
 
 		for(int i; i<drawList.size();i++){
-			obj curTar = drawList[0];
+			float curTar = drawList[0];
 			
-			curTarID=[0]
-			xtrans=curTar[1]
-			ytrans=curTar[2]
-			ztrans=curTar[3]
-			xang=curTar[4]
-			yang=curTar[5]
-			zang=curTar[6]
-			
+			curTarID=[0]; //Does nothing as of yet
+
+			transX=curTar[1];
+			transY=curTar[2];
+			transZ=curTar[3];
+
+			angX=curTar[4];
+			angY=curTar[5];
+			angZ=curTar[6];
+
+			scaleX=kObjectScale;
+			scaleY=kObjectScale;
+			scaleZ=kObjectScale;
 		
 		
 		
 			QCAR::Matrix44F modelViewProjection; //Gets the modelview matrix
+
+			//Modify modelViewMAtrix
+			SampleUtils::translatePoseMatrix(transX, transY, transZ + kObjectScale, &modelViewMatrix2.data[0]); //Translate matrix
+			SampleUtils::rotatePoseMatrix(angX, 1.0, 0.0, 0.0,&modelViewMatrix2.data[0]);
+			SampleUtils::rotatePoseMatrix(angY,0.0, 1.0, 0.0,&modelViewMatrix2.data[0]);
+			SampleUtils::rotatePoseMatrix(angZ, 0.0, 0.0, 1.0,&modelViewMatrix2.data[0]);
+			SampleUtils::scalePoseMatrix(scaleX, scaleY, scaleZ, &modelViewMatrix2.data[0]);	//Scale matrix
+			SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&modelViewMatrix2.data[0],&modelViewProjection2.data[0]);	//multiply matrix by something and store in result
+
+
 
 			//Draws the matrix
 			/*
