@@ -387,38 +387,57 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
 		//Hardcoded short list of objects for test run. 
 		// ID,transX,transY,transZ,angX,angY,angZ
+		for(int j; j<7; j++){
+			drawList[0][j]=0.0;
+			drawList[1][j]=0.0;
+			drawList[2][j]=0.0;
+		}
+		drawList[0][1]=100.0;
+		drawList[0][2]=100.0;
+		drawList[0][4]=90.0;
+
+		drawList[1][1]=100.0;
+		drawList[1][4]=180.0;
+
+		drawList[1][2]=100.0;
+
+		/*
 		drawList[0]=[0.0,100.0,100.0,0.0,90.0,0.0,0.0];
 		drawList[1]=[0.0,100.0,0.0,0.0,180.0,0.0,0.0];
 		drawList[2]=[0.0,0.0,100.0,0.0,0.0,0.0,0.0];
+		*/
 
-		for(int i; i<drawList.size();i++){
-			float curTar = drawList[0];
+		//Loop hardcoded to list size to prevent errors
+		for(int i; i<3;i++){
+
+			//float curTar[7];
+			//curTar = drawList[0];
 			
-			curTarID=[0]; //Does nothing as of yet
+			//float curTarID=[0]; //Does nothing as of yet
 
-			transX=curTar[1];
-			transY=curTar[2];
-			transZ=curTar[3];
+			float transX=drawList[i][1];
+			float transY=drawList[i][2];
+			float transZ=drawList[i][3];
 
-			angX=curTar[4];
-			angY=curTar[5];
-			angZ=curTar[6];
+			float angX=drawList[i][4];
+			float angY=drawList[i][5];
+			float angZ=drawList[i][6];
 
-			scaleX=kObjectScale;
-			scaleY=kObjectScale;
-			scaleZ=kObjectScale;
+			float scaleX=kObjectScale;
+			float scaleY=kObjectScale;
+			float scaleZ=kObjectScale;
 		
 		
 		
 			QCAR::Matrix44F modelViewProjection; //Gets the modelview matrix
 
 			//Modify modelViewMAtrix
-			SampleUtils::translatePoseMatrix(transX, transY, transZ + kObjectScale, &modelViewMatrix2.data[0]); //Translate matrix
-			SampleUtils::rotatePoseMatrix(angX, 1.0, 0.0, 0.0,&modelViewMatrix2.data[0]);
-			SampleUtils::rotatePoseMatrix(angY,0.0, 1.0, 0.0,&modelViewMatrix2.data[0]);
-			SampleUtils::rotatePoseMatrix(angZ, 0.0, 0.0, 1.0,&modelViewMatrix2.data[0]);
-			SampleUtils::scalePoseMatrix(scaleX, scaleY, scaleZ, &modelViewMatrix2.data[0]);	//Scale matrix
-			SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&modelViewMatrix2.data[0],&modelViewProjection2.data[0]);	//multiply matrix by something and store in result
+			SampleUtils::translatePoseMatrix(transX, transY, transZ + kObjectScale, &modelViewMatrix.data[0]); //Translate matrix
+			SampleUtils::rotatePoseMatrix(angX, 1.0, 0.0, 0.0,&modelViewMatrix.data[0]);
+			SampleUtils::rotatePoseMatrix(angY,0.0, 1.0, 0.0,&modelViewMatrix.data[0]);
+			SampleUtils::rotatePoseMatrix(angZ, 0.0, 0.0, 1.0,&modelViewMatrix.data[0]);
+			SampleUtils::scalePoseMatrix(scaleX, scaleY, scaleZ, &modelViewMatrix.data[0]);	//Scale matrix
+			SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&modelViewMatrix.data[0],&modelViewProjection.data[0]);	//multiply matrix by something and store in result
 
 
 
